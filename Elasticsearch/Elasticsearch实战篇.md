@@ -24,7 +24,7 @@ Mapping映射
 相关度评分：\_score
 元数据：\_source 
 
-Query String
+## Query String
 - Search All: `GET /product/_search`
 - Parameter: `GET /product/_search?q=name:xiaomi`
 - Page: `GET /product/_search?from=0&size=2&sort=price:asc`
@@ -76,7 +76,7 @@ GET product/_search
 }
 ``` 
 
-Term query
+## Term query
 - term: 匹配和搜索词项完全相等的结果
 	- term和match_phrase区别：
 	  match_phrase会将检索关键词分词，match_phrase的分词结果必须在被检索字段中的分词中都包含，而且顺序必须相同，而且默认必须都是连续的。term搜索**不会**将搜索词**分词**。
@@ -132,7 +132,7 @@ Term query
 }
 ```
 
-Filter
+## Filter
 -  filter：query和filter的主要区别在： filter是结果导向的而query是过程导向。query倾向于“当前文档和查询的语句的相关度”而filter倾向于“当前文档和查询的条件是不是相符”。即在查询过程中，query是要对查询的每个结果计算相关性得分的，而filter不会。另外filter有相应的[[Elasticsearch原理篇#缓存机制]]，可以提高查询效率。
 ```json
 GET product/_search
@@ -165,6 +165,7 @@ GET product/_search
 }
 ```
 
-Bool Query
+## Bool Query
 bool：可以组合多个查询条件，bool查询也是采用more_matches_is_better的机制，因此满足must和should子句的文档将会合并起来计算分值
-- **must** ：必须满足子句（查询）必须出现在匹配的文档中，并将有助于得分。
+- **must** ：必须满足子句（查询）必须出现在匹配的文档中，并将有助于得分。   
+- should
