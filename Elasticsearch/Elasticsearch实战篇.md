@@ -48,7 +48,7 @@ GET product/_search
 GET product/_search
 {
 	"query": {
-		"match_all": {}
+	  "match_all": {}
 	}
 }
 ```
@@ -74,7 +74,7 @@ GET product/_search
 		}
 	}
 }
-``` 
+```
 
 ## Term query
 - term: 匹配和搜索词项完全相等的结果
@@ -96,7 +96,7 @@ GET product/_search
 		}
 	}
 }
-```
+  ```
  ```json
 	GET product/_search
 {
@@ -106,7 +106,7 @@ GET product/_search
 		}
 	}
 }
-```
+ ```
  ```json
 	GET product/_search
 {
@@ -116,7 +116,7 @@ GET product/_search
 		}
 	}
 }
-```
+ ```
  ```json
 	GET product/_search
 {
@@ -130,7 +130,7 @@ GET product/_search
 		}
 	}
 }
-```
+ ```
 
 ## Filter
 -  filter：query和filter的主要区别在： filter是结果导向的而query是过程导向。query倾向于“当前文档和查询的语句的相关度”而filter倾向于“当前文档和查询的条件是不是相符”。即在查询过程中，query是要对查询的每个结果计算相关性得分的，而filter不会。另外filter有相应的[[Elasticsearch原理篇#缓存机制]]，可以提高查询效率。
@@ -169,3 +169,11 @@ GET product/_search
 bool：可以组合多个查询条件，bool查询也是采用more_matches_is_better的机制，因此满足must和should子句的文档将会合并起来计算分值
 - **must** ：必须满足子句（查询）必须出现在匹配的文档中，并将有助于得分。   
 - should
+
+分词器
+
+filter
+
+tokenizer
+
+重点：热更新
