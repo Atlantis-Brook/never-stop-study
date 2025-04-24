@@ -11,7 +11,7 @@ Mapping映射
 `index`
 >ES调优：关闭不需要创建倒排索引的字段的index属性
 
-`{python  }text`
+`{python icon} text`
 
 	```{ 123 } 
 	dafasfa 
@@ -33,7 +33,7 @@ Mapping映射
 
 FullText query
 - match: 匹配包含某个term的子句
-```json
+```json title:match
 GET product/_search
 {
 	"query": {
@@ -44,7 +44,7 @@ GET product/_search
 }
 ```
 - match_all: 匹配所有子句的结果
-```json
+```json title:match_all
 GET product/_search
 {
 	"query": {
@@ -53,7 +53,7 @@ GET product/_search
 }
 ```
 - multi_match: 多字段条件
-```json
+```json title:mulit_match
 GET product/_search
 {
 	"query": {
@@ -65,7 +65,7 @@ GET product/_search
 }
 ```
 - match_phrase: 短语查询，查询时会匹配字段中每个分词的顺序
-```json
+```json title:match_phrase
 GET product/_search
 {
 	"query": {
