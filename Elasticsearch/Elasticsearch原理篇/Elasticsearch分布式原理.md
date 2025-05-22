@@ -1,4 +1,4 @@
-下#es #elasticsearch
+#es #elasticsearch
 # 1、 单机服务的问题？
 - 性能有限
 - 可用性差
