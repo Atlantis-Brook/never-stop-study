@@ -27,7 +27,6 @@
 ```yml title:elasticsearch.yaml
 discovery.type: single-node
 ```
-
 ## 引导检查——Bootstrap Checks
 在启动生产模式时，节点启动之前ES会自动对节点的相关配置逐项检查，目的是避免开发者在对齐配置项不了解的前提下做出不合理的配置。如果配置不符合性能或者兼容性要求，ES会阻止服务启动以保证服务的性能和可用性。
 检查项：
@@ -105,4 +104,4 @@ GET _cat/nodes?v=true&h=heap.current
 ## 7.2 重要的配置
 
 ES写入流程
-![[Pasted image 20250417024153.png]]
+![Pasted image 20250417024153.png](https://atlantis-picgo-core.oss-cn-beijing.aliyuncs.com/picgo/20250701143657-a39605-Pasted%20image%2020250417024153.png)
