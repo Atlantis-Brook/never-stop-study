@@ -13,10 +13,9 @@ Mapping映射
 
 `{python icon} text`
 
-	```{ 123 } 
-	dafasfa 
-	```
-`keyword`
+```python
+dafasfa 
+```
 
 
 # Query DSL(Domain Specific Language)
