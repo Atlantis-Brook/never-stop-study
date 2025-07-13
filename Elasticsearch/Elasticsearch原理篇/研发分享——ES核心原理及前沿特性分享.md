@@ -3,10 +3,16 @@
 - Full-Text Search
 - RAG ,使用 Elasticsearch 的简单 RAG 系统
   ![Components of a simple RAG system using Elasticsearch](https://www.elastic.co/docs/solutions/images/elasticsearch-reference-rag-schema.svg)
-ES8
 
 # ES核心概念
-
+节点
+索引
+分片
+- 数据分片
+- 数据副本
+分段
+词项
+找到ES书中的图
 # ES核心原理
 
 ## 深度分页问题 (Deep Paging)
@@ -21,12 +27,21 @@ ES中from+size分页
 单个滚动搜索请求中检索大量结果，即非C端应用场景
 
 
-## 倒排索引底层原理
+## 倒排索引底层原理 0713
 
-## 高级检索
+### 压缩算法
+FOR
+稠密数据
 
-## 高级聚合
+RBM
+稀疏数组
 
-## 相关度评分算法
+> 稀疏的数组不适合使用FOR压缩算法
 
-## ES读写原理及调优
+## 高级检索 0716
+
+## 高级聚合 0715
+
+## 相关度评分算法 0714
+
+## ES读写原理及调优 0713
