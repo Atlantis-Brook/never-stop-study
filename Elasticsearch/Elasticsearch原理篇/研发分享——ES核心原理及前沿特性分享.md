@@ -1,10 +1,11 @@
-# ES9新特性
- 25年04月15日 Elastic推出Elasticsearch9.0版本
+# ES9新特性 717
+ 25年04月15日 Elastic推出[Elasticsearch9.0]()版本
 - Full-Text Search
 - RAG ,使用 Elasticsearch 的简单 RAG 系统
   ![Components of a simple RAG system using Elasticsearch](https://www.elastic.co/docs/solutions/images/elasticsearch-reference-rag-schema.svg)
+- semantic_text
 
-# ES核心概念
+# ES核心概念 718
 节点
 索引
 分片
@@ -37,6 +38,10 @@ RBM
 稀疏数组
 
 > 稀疏的数组不适合使用FOR压缩算法
+
+FSM
+FSA
+FST
 
 ## 高级检索 0716
 
