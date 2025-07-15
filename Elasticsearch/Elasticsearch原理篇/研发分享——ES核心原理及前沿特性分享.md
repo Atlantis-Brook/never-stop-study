@@ -19,13 +19,15 @@
 ## ES读写原理及调优 0714
 ### ES文档的写入过程
 #### ES支持的写入操作
-- create
-- delete，懒删除机制
-- index
-- update
+>以文档为基本单位进行操作。
+- create，只创建，不覆盖
+- delete，懒删除机制，不是立即从磁盘中移除
+- index，创建或覆盖文档
+- update，更新文档中的部分字段（不会覆盖整个文档）
 #### ES数据写入流程
 ES中数据写入均发生在Primary Shard，当数据在Primary写入完成之后，会同步到相应的Replica Shard，ES的数据写入流程：
 ![image.png](https://atlantis-picgo-core.oss-cn-beijing.aliyuncs.com/picgo/20250715013247-762e07-20250715013246598.png)
+
 #### 写一致性策略
 
 ### ES写入原理
