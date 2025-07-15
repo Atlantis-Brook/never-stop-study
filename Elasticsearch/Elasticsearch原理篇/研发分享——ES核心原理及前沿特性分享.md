@@ -62,6 +62,10 @@ Merge
 #### 禁用swap
 > swap，利用虚拟存储技术，当内存未满，直接启动磁盘IO，而内存已满时当发生缺页中断 优化！！！
 Swap 是磁盘上划分或文件形式的**虚拟内存扩展区域**，当系统物理 RAM 不足时，暂存不常用内存页到这里，以释放 RAM，虽能避免 OOM，却会因 I/O 较慢而影响性能。
+
+gpt 记录中详细整理下
+![image.png](https://atlantis-picgo-core.oss-cn-beijing.aliyuncs.com/picgo/20250716032702-bab087-20250716032701498.png)
+
 ### 查询性能调优
 
 ## 倒排索引底层原理 0715
