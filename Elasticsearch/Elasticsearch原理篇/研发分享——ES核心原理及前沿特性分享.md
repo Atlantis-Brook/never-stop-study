@@ -89,7 +89,13 @@ ES中from+size分页
 
 ### 避免使用深度分页
 解决深度分页的最有效手段就是避免使用深度分页（此处可以举例子 死锁的解决/ 避免死锁）
-此处可以举例子，全文搜索，Google / Baidu 等所有词条召回结果中均没有页面跳转功能；垂直搜索，淘宝 / 京东 等检索商品结果中最多仅展示100页
+此处可以举例子：
+全文搜索，Google / Baidu 等所有词条召回结果中均没有页面跳转功能；
+![image.png](https://atlantis-picgo-core.oss-cn-beijing.aliyuncs.com/picgo/20250717014204-d148e4-20250717014202825.png)
+
+垂直搜索，淘宝 / 京东 等检索商品结果中最多仅展示100页。
+![image.png](https://atlantis-picgo-core.oss-cn-beijing.aliyuncs.com/picgo/20250717014111-4f14bb-20250717014109607.png)
+
 ### 滚动查询 Scroll Search
 官方ES7之后已不再推荐使用滚动查询进行深度分页查询，因为无法保存索引状态。
 #### 适合场景
