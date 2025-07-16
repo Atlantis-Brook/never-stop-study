@@ -5,6 +5,7 @@
 - RAG ,使用 Elasticsearch 的简单 RAG 系统
   ![Components of a simple RAG system using Elasticsearch](https://www.elastic.co/docs/solutions/images/elasticsearch-reference-rag-schema.svg)
 - semantic_text
+ https://www.bilibili.com/video/BV1j25TzKEft/?vd_source=29e582d27bf2c4eb8b68757fde2921b3
 
 # ES核心概念 718
 节点
