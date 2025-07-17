@@ -85,7 +85,17 @@ FSA
 Finite State Transducers，FST
 
 ## 深度分页问题 (Deep Paging)
-ES中from+size分页
+ES中正常的分页查询
+```json
+GET order_2290w/_search
+{
+  "from": 0,
+  "size": 5
+}
+```
+很好理解，即查询第一页的`5`条数据。图中数字2即返回的五条文档数据。但是如果我们查询的数据页数特别大，达到什么程度呢？当`from + size`大于`10000`的时候，就会出现问题，如下图报错信息所示：
+![image.png](https://atlantis-picgo-core.oss-cn-beijing.aliyuncs.com/picgo/20250717164430-495380-20250717164429958.png)
+
 
 ### 避免使用深度分页
 解决深度分页的最有效手段就是避免使用深度分页（此处可以举例子 死锁的解决/ 避免死锁）
