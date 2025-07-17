@@ -98,7 +98,7 @@ GET order_2290w/_search
 ![image.png](https://atlantis-picgo-core.oss-cn-beijing.aliyuncs.com/picgo/20250717164430-495380-20250717164429958.png)
 分布式系统都面临着同一个问题，数据的排序不可能在同一个节点完成。
 ![image.png](https://atlantis-picgo-core.oss-cn-beijing.aliyuncs.com/picgo/20250717183218-73b3dd-20250717183218100.png)
-ES检索数据时，会默认排序
+一共10w条数据存储在ES数据节点中，我们想取10000～10100条ES检索数据时，会默认排序
 
 ### max_result_window参数
 `max_result_window`是分页返回的最大数值，默认值为10000。max_result_window本身是对JVM的一种保护机制，通过设定一个合理的阈值，避免分页查询时由于单页数据过大而导致OOM。
