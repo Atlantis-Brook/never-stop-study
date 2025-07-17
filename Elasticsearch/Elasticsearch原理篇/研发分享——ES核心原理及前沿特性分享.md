@@ -111,7 +111,7 @@ max_result_window是分页返回的最大数值，默认值为10000。max_result
 ### 滚动查询 Scroll Search
 官方ES7之后已不再推荐使用滚动查询进行深度分页查询，因为无法保存索引状态。
 #### 适合场景
-单个滚动搜索请求中检索大量结果，即非C端应用场景
+单个滚动搜索请求中检索大量结果，即**非C端**应用场景
 #### 使用
 ```json
 GET <index>/_search?scroll=1m
@@ -119,15 +119,18 @@ GET <index>/_search?scroll=1m
   "size": 100
 }
 ```
-`scroll`
+`scroll`表示Elasticsearch 应该保持“搜索上下文”多长时间
+
+```json
+POST /_search/scroll
+{
+	"scroll": "1m",
+	"scroll _id": "DXF1ZХJ5QW5kRmV®Y2gBAАAAААABY08WN3Q4dDJjcVVRQ0NBb]1GMmFqN®ZVZw=="
+}
+```
 
 
 
-
-
-
-活动预告
-Q3 ES平台建设项目重新启动，各业务中心在日常使用ES搜索的CASE中的问题，在中台侧推动各业务中心接入并升级ES时，统一协助解决。重新规范化整合ES资源，并解决历史遗留问题。
 
 ## Search After
 
@@ -136,3 +139,11 @@ Q3 ES平台建设项目重新启动，各业务中心在日常使用ES搜索的C
 - 每次只能向后搜索1页数据
     
 - 适用于C端业务
+
+
+
+
+
+
+活动预告
+Q3 ES平台建设项目重新启动，各业务中心在日常使用ES搜索的CASE中的问题，在中台侧推动各业务中心接入并升级ES时，统一协助解决。重新规范化整合ES资源，并解决历史遗留问题。
