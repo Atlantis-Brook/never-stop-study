@@ -98,6 +98,7 @@ GET order_2290w/_search
 ![image.png](https://atlantis-picgo-core.oss-cn-beijing.aliyuncs.com/picgo/20250717164430-495380-20250717164429958.png)
 分布式系统都面临着同一个问题，数据的排序不可能在同一个节点完成。
 ![image.png](https://atlantis-picgo-core.oss-cn-beijing.aliyuncs.com/picgo/20250717183218-73b3dd-20250717183218100.png)
+ES检索数据时，会默认排序
 
 ### max_result_window参数
 `max_result_window`是分页返回的最大数值，默认值为10000。max_result_window本身是对JVM的一种保护机制，通过设定一个合理的阈值，避免分页查询时由于单页数据过大而导致OOM。
@@ -105,8 +106,8 @@ GET order_2290w/_search
 **永远不要暴力提升** `max_result_window`, 很可能导致的后果就是频繁的发生OOM而且很难找到原因。
 ### 深度分页解决方案
 #### 避免使用深度分页
-解决深度分页的最有效手段就是避免使用深度分页（此处可以举例子 死锁的解决/ 避免死锁）
-此处可以举例子：
+解决深度分页的最有效手段就是避免使用深度分页，可能有人会有疑问作为技术怎么能要求客户做什么呢，通过妥协用户体验来解决技术问题？
+众多优秀大型搜索引擎是如何面对深度分页场景的：
 全文搜索，Google / Baidu 等所有词条召回结果中均没有跳页功能；
 ![image.png](https://atlantis-picgo-core.oss-cn-beijing.aliyuncs.com/picgo/20250717014204-d148e4-20250717014202825.png)
 垂直搜索，淘宝 / 京东 等检索商品结果中最多仅展示100页，本质和ES中的`max_result_window`作用是一样的。
