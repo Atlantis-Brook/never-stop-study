@@ -2,7 +2,7 @@
 # ES9新特性 717
  25年04月15日 Elastic推出[Elasticsearch9.0]()版本
 - Full-Text Search
-- RAG ,使用 Elasticsearch 的简单 RAG 系统
+- RAG ,使用 Elasticsearch 的简单 RAG 系统 <调研ES支持什么样的向量数据库>
   ![Components of a simple RAG system using Elasticsearch](https://www.elastic.co/docs/solutions/images/elasticsearch-reference-rag-schema.svg)
 - semantic_text https://www.bilibili.com/video/BV1j25TzKEft/?vd_source=29e582d27bf2c4eb8b68757fde2921b3
 
@@ -101,4 +101,4 @@ ES中from+size分页
 单个滚动搜索请求中检索大量结果，即非C端应用场景
 
 活动预告
-Q3 ES平台建设qi
+Q3 ES平台建设项目重新启动，各业务中心在日常使用ES搜索的CASE中的问题，在中台侧推动各业务中心接入并升级ES时，统一协助解决。重新规范化整合ES资源，并解决历史遗留问题。
