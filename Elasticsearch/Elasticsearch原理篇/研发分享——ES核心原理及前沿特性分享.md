@@ -130,14 +130,23 @@ POST /_search/scroll
 ```
 
 
-
-
 ## Search After
-
+#### 适合场景
+或用户行为连续浏览
+#### 使用
+使用文档的排序字段（如时间戳、唯一 ID）作为游标
+```json
+GET <index>/_search
+{
+  "size": 10,
+  "query": { "match_all": {} },
+  "sort": [{ "timestamp": "asc" }, { "_id": "asc" }],
+  "search_after": [1625022345000, "doc123"]
+}
+```
+特点
 - 不支持向前搜索
-    
 - 每次只能向后搜索1页数据
-    
 - 适用于C端业务
 
 
