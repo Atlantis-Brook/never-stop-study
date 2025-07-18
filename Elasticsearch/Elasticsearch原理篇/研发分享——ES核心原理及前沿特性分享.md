@@ -191,11 +191,13 @@ GET <index>/_search?scroll=1m
 ```
 `scroll`表示Elasticsearch 应该保持“搜索上下文”多长时间，`scroll`超时后，搜索上下文会自动删除。
 
+
 ```json
-POST /_search/scroll
+ POST /_search/scroll
 {
 	"scroll": "1m",
-	"scroll _id": "DXF1ZХJ5QW5kRmV®Y2gBAАAAААABY08WN3Q4dDJjcVVRQ0NBb]1GMmFqN®ZVZw=="
+	"scroll _id":
+	 "DXF1ZХJ5QW5kRmV®Y2gBAАAAААABY08WN3Q4dDJjcVVRQ0NBb]1GMmFqN®ZVZw=="
 }
 ```
 ##### 特点
