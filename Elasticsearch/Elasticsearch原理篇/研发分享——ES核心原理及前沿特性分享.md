@@ -49,18 +49,15 @@
 ### 倒排索引的数据结构
 ![image.png](https://atlantis-picgo-core.oss-cn-beijing.aliyuncs.com/picgo/20250718025221-a2812a-20250718025221034.png)
 - **倒排表（Posting List）**：记录包含某个词项的所有文档的列表，通常包含文档 ID 和其他元数据。
-- **词项（Term）**：文档经过分词（tokenization）后生成的最小索引单元，通常是单词或短语。
-- **词典（Term index）**：存储所有词项的集合，通常使用高效的数据结构（如 B+ 树或哈希表）以支持快速查找。
-- **元数据（Metadata）**：与词项和文档相关的附加信息，例如词频、位置信息等。
+- **词项字典（Term dictionary）**：文档经过分词（tokenization）后生成的最小索引单元，通常是单词或短语。
+- **词项索引（Term index）**：存储所有词项的集合，通常使用高效的数据结构（如 B+ 树或哈希表）以支持快速查找。
 ### 倒排索引核心算法
-倒排表压缩算法
-FOR
-RBM
-#### 压缩算法
-FOR：Frame Of Reference
+#### 倒排表的压缩算法
+**压缩，就是尽可能降低每个数据占用的空间，同时又能让信息不失真，能够还原回来。**
+##### FOR：Frame Of Reference
 稠密数据
-
-RBM：Roaring Bit Map
+Delta-encode（增量编码）
+##### RBM：Roaring Bit Map
 稀疏数组
 
 > 稀疏的数组不适合使用FOR压缩算法
