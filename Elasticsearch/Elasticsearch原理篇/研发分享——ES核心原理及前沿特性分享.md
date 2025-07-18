@@ -6,6 +6,8 @@
   ![Components of a simple RAG system using Elasticsearch](https://www.elastic.co/docs/solutions/images/elasticsearch-reference-rag-schema.svg)
 - semantic_text https://www.bilibili.com/video/BV1j25TzKEft/?vd_source=29e582d27bf2c4eb8b68757fde2921b3
 # ES核心概念 todo
+
+集群：
 ## 节点（Node）
 - **数据节点（Data Node）**：负责存储数据（主分片和副本分片），执行索引、搜索、聚合等操作。配置为 node.data: true。
 - **主节点（Master Node）**：负责集群管理任务，如分片分配、节点加入/退出、索引创建等。配置为 node.master: true。
