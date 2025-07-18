@@ -1,10 +1,19 @@
 > 开场：我也是初学者，对ES理论的理解相对浅薄，今天的分享主要是抛砖引玉的效果，做一个ES原理介绍的简单分享，加深一下大家对ES的理解，在后续工作中进行深度研究。默认大家掌握了ES基础使用的前置知识。
 # ES9新特性 todo
- 25年04月15日 Elastic推出[Elasticsearch9.0]()版本
-- Full-Text Search
-- RAG ,使用 Elasticsearch 的简单 RAG 系统 <调研ES支持什么样的向量数据库>
+ 25年04月15日 Elastic推出Elasticsearch9.0版本
+## Full-Text Search
+## RAG 
+使用 Elasticsearch 的简单 RAG 系统
   ![Components of a simple RAG system using Elasticsearch](https://www.elastic.co/docs/solutions/images/elasticsearch-reference-rag-schema.svg)
-- semantic_text https://www.bilibili.com/video/BV1j25TzKEft/?vd_source=29e582d27bf2c4eb8b68757fde2921b3
+## Semantic search
+[实战视频](https://www.bilibili.com/video/BV1j25TzKEft/?vd_source=29e582d27bf2c4eb8b68757fde2921b3)
+大多数标准数据库允许您通过匹配结构化字段来检索相关信息，包括匹配描述中的关键字以及数字字段中的值。相比之下，矢量数据库可以捕捉非结构化文本的含义，并找到“您想要的意思”，而不是匹配文本——这也称为语义搜索。
+how does it work?
+  ![image.png](https://atlantis-picgo-core.oss-cn-beijing.aliyuncs.com/picgo/20250719021626-90a906-20250719021626325.png)
+作为向量数据库
+![image.png](https://atlantis-picgo-core.oss-cn-beijing.aliyuncs.com/picgo/20250719023819-d9968b-20250719023819376.png)
+
+
 # ES核心概念 todo
 
 集群：
@@ -19,6 +28,7 @@
 分片是索引的物理存储单元，将索引数据分割成较小的部分，分布在集群的不同节点上。分片分为两种类型：
 - **主分片（Primary Shard）**：负责处理写入操作，并将数据复制到副本分片。
 - **副本分片（Replica Shard）**：主分片的拷贝，用于提高读性能和容错能力。
+![image.png](https://atlantis-picgo-core.oss-cn-beijing.aliyuncs.com/picgo/20250719030359-819486-20250719030358882.png)
 
 ## 段（Segment）
 段是 Lucene（Elasticsearch 的底层库）中用于存储数据的物理文件。每个分片由多个段组成，每个段是一个倒排索引（Inverted Index），存储文档和搜索相关的元数据。
@@ -31,7 +41,8 @@
     - 合并后的段是不可变的（Immutable），新写入的文档会生成新的段。
 - **配置**：可以通过 index.merge.policy 参数调整合并策略，但通常建议保留默认设置。
 
-找到ES书中的图
+![image.png](https://atlantis-picgo-core.oss-cn-beijing.aliyuncs.com/picgo/20250719030350-4f4a05-20250719030349822.png)
+
 # ES核心原理  todo
 > 从宏观到微观进行讲解 一个文档创建 -》 写入〉 -〉 存储 -〉生成索引
 ## 倒排索引底层原理
@@ -69,6 +80,9 @@ FSA
 
 
 Finite State Transducers，FST
+https://learnku.com/elasticsearch/t/46888
+
+FST 以字节的方式存储所有的 term，这种压缩方式可以有效的缩减存储空间，使得 term index 足以放进内存，但这种方式也会导致查找时需要更多的 CPU 资源。
 ## ES读写原理及调优
 ### ES文档的写入过程
 #### ES支持的写入操作
@@ -87,10 +101,15 @@ ES中数据写入均发生在Primary Shard，当数据在Primary写入完成之�
 >数据在由 node4 转发至 node5的时候，是通过以下公式来计算，指定的文档具体在那个分片的
 >`shard_num = hash(_routing) % num_primary_shards`
 >其中，\_routing 的默认值是文档的 id。
-#### 写一致性策略 （怎么讲解？）todo
+#### 写一致性策略 
 一致性策略由 `wait_for_active_shards` 参数控制：
 即确定客户端返回数据之前必须处于active 的分片分片数（包括主分片和副本），默认为 wait_for_active_shards = 1，即只需要主分片写入成功，设置为 `all`或任何正整数，最大值为索引中的分片总数 ( `number_of_replicas + 1` )。如果当前 active 状态的副本没有达到设定阈值，写操作必须等待并且重试，默认等待时间30秒，直到 active 状态的副本数量超过设定的阈值或者超时返回失败为止。
 执行索引操作时，分配给执行索引操作的主分片可能不可用。造成这种情况的原因可能是主分片当前正在从网关恢复或正在进行重定位。默认情况下，索引操作将在主分片上等待最多 1 分钟，然后才会失败并返回错误。
+类似于Kafka生产者中的`acks`:
+- **ES 的 `wait_for_active_shards=1` ↔ Kafka 的 `acks=1`**：写操作只需主分片/Leader 即可确认，追求吞吐和低延迟。
+- **ES 的 `wait_for_active_shards=all` ↔ Kafka 的 `acks=all`**：主+副本都必须确认，追求高耐久性和强一致性。
+
+二者设计目标一致：**在性能与一致性之间做取舍**。
 ### ES写入原理
 ![Image from Fynotefile.png](https://atlantis-picgo-core.oss-cn-beijing.aliyuncs.com/picgo/20250717234604-d999a6-Image%20from%20Fynotefile.png)
   
@@ -98,13 +117,16 @@ Memory Buffer是为了保证数据高性能写入
 OS Cache是为了保证数据高性能检索
 Translog是为了保证数据安全性，临时的
 最终同步到磁盘保存数据
-#### Translog todo
-类似于mysql中的redolog，为了数据安全性引入的概念
+#### Translog
+类似于mysql中的redolog，为了数据安全性引入的概念。
+Elasticsearch Flush 是Lucene 执行 commit 并开始写入新的 translog 的过程。刷新是在后台自动执行的，以确保 translog 不会变得太大，这将导致在恢复期间重放其操作需要相当长的时间。手动执行刷新的能力也通过 API 公开，但是一般并不需要。
+translog 中的数据仅在 translog 被执行 `fsync` 和 commit 时才会持久化到磁盘。如果发生硬件故障或操作系统崩溃或 JVM 崩溃或分片故障，自上次 translog 提交以来写入的任何数据都将丢失。
 #### Refresh
 为了把Memory Buffer给清空生成segment文件，立马同步到OS Cache中，此时将segment文件打开，数据就可以被检索了
-#### Flush todo
+#### Flush
 为了把数据从OS Cache中刷到OS Disk中，将索引文件同步到磁盘中
 #### Merge
+由于自动刷新流程每秒会创建一个新的段 ，这样会导致短时间内的段数量暴增。而段数目太多会带来较大的麻烦。 每一个段都会消耗文件句柄、内存和cpu运行周期。更重要的是，每个搜索请求都必须轮流检查每个段；所以段越多，搜索也就越慢。
 当segment文件产生较多的时候的一个合并过程，在合并的时候回提交一个commit point来标记哪些segment是可用的 ，删除旧的标记。
 在合并过程中，标记为删除的数据不会写入新分段，当合并过程结束，旧的分段数据被删除，标记删除的数据才从磁盘中删除
 ### 写入性能调优
@@ -125,6 +147,7 @@ Translog是为了保证数据安全性，临时的
 > swap，属于虚拟存储技术，当内存满时，操作系统使用页面置换算法（如LRU）选择候选页，然后swap-out将内存页写入磁盘的swap区，而当进程再次访问此页时执行swap-in，触发缺页中断，操作系统将页从swap区读取回内存。
 
 由于Swap 是磁盘上划分或文件形式的**虚拟内存扩展区域**，当系统物理 RAM 不足时，暂存不常用内存页到这里，以释放 RAM，虽能避免 OOM，却会因 I/O 较慢而影响性能。
+``
 
 ![image.png](https://atlantis-picgo-core.oss-cn-beijing.aliyuncs.com/picgo/20250716032702-bab087-20250716032701498.png)
 >交换对性能和节点稳定性非常不利，应该不惜一切代价避免。它可能导致垃圾收集持续几分钟而不是几毫秒，并且可能导致节点响应缓慢甚至与集群断开连接。在Elastic分布式系统中，让操作系统杀死节点更有效。
@@ -133,6 +156,10 @@ Translog是为了保证数据安全性，临时的
 #### 使用多个工作线程
 为了使用集群的所有资源，应该从多个线程或进程发送数据。除了更好地利用集群的资源外，还有助于降低每个 fsync 的成本。
 确保注意 TOO_MANY_REQUESTS (429)响应代码（EsRejectedExecutionException使用 Java 客户端），这是 Elasticsearch 告诉我们它无法跟上当前索引速度的方式。发生这种情况时，应该在重试之前暂停索引，最好使用随机指数退避算法，有效避免压垮集群。
+> 随机指数退避算法,
+> 1. 确定基本退避时间base，比如 1s
+> 2. 第N次重试之前等待在［base，base* 2“］之间随机选取，作为等待时间
+> 3. 通常对等待时间设置例如几分钟的上限，避免指数等待无限增长
 #### 避免使用稀疏数据
 **稀疏数据** 是指在同一个索引下，大量文档的字段不一致，很多字段对于大多数文档都是空值或不存在。这会导致即使字段为空，Lucene也会在内部为每个文档预留存储空间，浪费磁盘和内存资源并且写入与刷新时开销以及查询性能下降。
 **建议**拆分索引、禁止不必要字段索引避免mapping膨胀。
