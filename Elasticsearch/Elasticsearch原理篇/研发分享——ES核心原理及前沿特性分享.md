@@ -1,4 +1,4 @@
-> 开场：我也是初学者，对ES理论的理解相对浅薄，今天的分享主要是抛砖引玉的效果，做一个ES原理介绍的简单分享，加深一下大家对ES的理解，在后续工作中进行深度研究。默认大家掌握了ES基础使用的前置知识。
+#es #elasticsearch
 # ES9新特性 todo
  25年04月15日 Elastic推出[Elasticsearch9.0]()版本
 - Full-Text Search
