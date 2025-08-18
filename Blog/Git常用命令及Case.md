@@ -109,3 +109,49 @@ A -- B -- C -- F -----------------M   (main)
 
 1. **个人开发时**：在合并前先 rebase 到 `main`，再用 FF 合并，历史干净。
 2. **团队协作时**：如果需要保留分支历史（审计、review），则用 `merge`，否则用 `rebase + FF` 保持简洁。
+
+
+# 参考：
+# 推荐使用方式
+
+1. **个人开发分支（feature）**
+    
+    - 开发完功能后，建议先用 `rebase` 把分支更新到主分支最新位置：
+        
+        `git checkout feature git fetch origin git rebase origin/master`
+        
+    - 然后合并回主分支时，用 **fast-forward**，保持历史简洁：
+        
+        `git checkout master git merge --ff-only feature`
+        
+    
+    ✅ 优点：历史直线，像一个人写的一样。
+    
+
+---
+
+2. **团队协作场景**
+    
+    - **不要随便 rebase 已经 push 的公共分支**（会改历史，害队友）。
+        
+    - 推荐：
+        
+        - 本地开发分支 → 可以用 rebase 整理提交。
+            
+        - 合并到主分支 → 用 `--no-ff` 保留合并痕迹，方便追踪：
+            
+            `git merge --no-ff feature`
+            
+    
+    ✅ 优点：历史清晰可追溯，方便代码审查。
+    
+
+---
+
+3. **严格要求线性历史的团队**
+    
+    - 要求所有人 push 前都要 `git pull --rebase`，避免 merge commit。
+        
+    - 合并时用 `--ff-only` 强制快进。
+        
+    - 历史就是一条直线。
