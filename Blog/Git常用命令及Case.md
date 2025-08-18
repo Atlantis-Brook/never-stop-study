@@ -16,9 +16,9 @@ reset
 
 在你开发期间，其他同事已经往 `main` 提交了新的 commit。  
 如果你直接合并，会出现一个 **merge commit**。为了保持 **提交历史简洁**，你希望能用 **rebase + fast-forward**。
-## 初始情况
+### 初始情况
 
-```bash
+```shell
 # main 分支提交历史
 A -- B -- C    (main)
 
@@ -29,22 +29,23 @@ A -- B -- C
 
 ```
 - `C` 是最新的公共 commit
-    
 - `D`、`E` 是你在 `feature/login` 上的提交
-    
 
 此时团队已经在 `main` 上新增了一个提交 `F`：
-``` bash
+```shell
 A -- B -- C -- F   (main)
           \
            D -- E   (feature/login)
 ```
 ---
-## 操作步骤
+### 操作步骤
 
-### 1. 在本地更新 `main`
+#### 1. 在本地更新 `main`
 
-`git checkout main git pull origin main`
+```git
+git checkout main 
+git pull origin main
+```
 
 现在 `main` 是：
 
@@ -52,45 +53,56 @@ A -- B -- C -- F   (main)
 
 ---
 
-### 2. 在功能分支上 rebase
+#### 2. 在功能分支上 rebase
 
-`git checkout feature/login git rebase main`
-
+```git
+git checkout feature/login 
+git rebase main
+```
 **效果图**：
-
-`A -- B -- C -- F   (main)                   \                    D' -- E'   (feature/login)`
+```shell
+A -- B -- C -- F   (main)
+                  \
+                   D' -- E'   (feature/login)
+```
 
 - `D'`、`E'` 是 rebase 后“重新应用”的 commit（旧的 D、E 会被替换掉）。
-    
 - 这样 `feature/login` 就基于最新的 `main` 了。
-    
-
 ---
 
-### 3. 合并时用 fast-forward
+#### 3. 合并时用 fast-forward
 
 切回主分支，然后执行 FF 合并：
 
-`git checkout main git merge --ff-only feature/login`
+```git
+git checkout main 
+git merge --ff-only feature/login
+```
 
 最终结果：
 
-`A -- B -- C -- F -- D' -- E'   (main, feature/login)`
+```shell
+A -- B -- C -- F -- D' -- E'   (main, feature/login)
+```
 
 - 没有多余的 **merge commit**
-    
 - 历史线非常干净，像是 **一条直线**
-    
 
 ---
 
-## 对比如果不用 rebase，直接 merge
+### 对比如果不用 rebase，直接 merge
 
-`git checkout main git merge feature/login`
+```git
+git checkout main 
+git merge feature/login
+```
 
 会变成：
-
-`A -- B -- C -- F -----------------M   (main)           \                       /            D -- E   (feature/login)`
+```bash
+A -- B -- C -- F -----------------M   (main)
+          \                       /
+           D -- E   (feature/login)
+```
 
 这里 `M` 是 **merge commit**，提交历史会多出一条分叉，看起来不如 rebase + FF 简洁。
 ### 推荐实践
