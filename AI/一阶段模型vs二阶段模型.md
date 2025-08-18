@@ -101,3 +101,4 @@
 ---
 
 要不要我帮你画一张 **流程对比图（类似于 YOLO vs Faster R-CNN / 推荐系统 召回+精排 vs 单阶段排序）**，这样视觉上更直观？
+![image.png](https://atlantis-picgo-core.oss-cn-beijing.aliyuncs.com/picgo/20250818114241-e3300c-20250818114240998.png)
