@@ -83,5 +83,8 @@ fix-dir/images/test/2020/07/24/21-40-31-36921a9c364ed4789d4bc684bcb81d62-localIm
 ![image.png](https://atlantis-picgo-core.oss-cn-beijing.aliyuncs.com/picgo/20250709183151-c05a8c-20250709183149729.png)
 命令：`{sh icon} /Users/qishuai/.nvm/versions/node/v24.3.0/bin/node /Users/qishuai/.nvm/versions/node/v24.3.0/bin/picgo u`
 > ⚠️注意： macOS图形界面不会自动加载`~/.zshrc`环境变量，所以nvm配置的node环境在GUI中是不可见的。需要配置完整的Node和PicGo路径
+> 
+
+
 ## Typora
 ![image.png](https://atlantis-picgo-core.oss-cn-beijing.aliyuncs.com/picgo/20250709183217-7c74f6-20250709183216840.png)
