@@ -11,3 +11,9 @@
 	```
 	-   恢复历史的贡献记录：
 - **Note**: Watch out for [gotcha/pitfall] in future (e.g., check version compatibility)
+
+
+git filter-repo --email-callback ' return email if email != b"old-email@example.com" else b"AtlantisBrook@163.com" '
+
+qs <qishuai@edianyun.com>
+<shuaiqi0607@gmail.com>
