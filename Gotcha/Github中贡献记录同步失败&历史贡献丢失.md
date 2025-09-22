@@ -10,7 +10,7 @@
 	git config user.email
 	```
 	-   恢复历史的贡献记录：
-	  使用官方工具`{shell icon} git-filter-repo `修改历史提交日志，重新推送到Github中即可。
+		使用官方工具`{shell icon} git-filter-repo `修改历史提交日志，重新推送到Github中即可。
 ```sh
 	# 1. 安装 git-filter-repo 重写历史提交的邮箱
 	pip install git-filter-repo
