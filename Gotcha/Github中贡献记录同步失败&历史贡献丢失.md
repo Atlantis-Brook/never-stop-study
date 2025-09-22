@@ -28,4 +28,4 @@
 	# 5. 推送到 GitHub
 	git push --force
 	```
-- **Note**: Watch out for [gotcha/pitfall] in future (e.g., check version compatibility)
+- **Note**: 
