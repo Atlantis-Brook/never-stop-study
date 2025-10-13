@@ -1,3 +1,4 @@
+#git #command
 # Git 常用命令
 revert
 
