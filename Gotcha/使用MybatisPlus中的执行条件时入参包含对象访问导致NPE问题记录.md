@@ -1,6 +1,6 @@
 #Java #MybatisPlus
 
-- **Problem**: 在使用mp中的`.eq(condition, column, val)`时
+- **Problem**: 在使用mp中的`{java icon} .eq(condition, column, val)`时，即使`{java icon} condition`中增加了条件判断，依然会执行`val`中的`{java icon} systemInfo.getId()`导致**NPE**问题
 ```java
 	List<Long> deleteIdList = slowPageOverviewService.lambdaQuery()  
 		.between(startTime != null && endTime != null, SlowPageOverviewPO::getCreateTime, startTime, endTime)  
@@ -11,7 +11,7 @@
 		.collect(Collectors.toList());
 	```
 - **Solution**:
-	 - 问题根因：
+	 - 条件查询：
 	   在 MyBatis-Plus 的源码中，无论是 `QueryWrapper` 还是 `LambdaQueryWrapper`，它们都继承自 `AbstractWrapper`。  
 	   核心方法定义在 `AbstractWrapper` 中：
   ```java
@@ -19,7 +19,16 @@
     return addCondition(condition, column, EQ, val);
 }
 	```
-	-   最佳实践写法（防 NPE），写 Lambda 条件时，推荐这样写：
+	- 问题根因：Java 求值顺序，区别主要在 Java 自身的 **求值机制**
+	```java
+	.eq(Objects.nonNull(systemInfo), SlowPageStatisticsPO::getSystemId, systemInfo.getId())
+	```
+	⚠️ 在调用 `.eq()` 前，Java 会 **先求出所有参数的值**：
+	1. 计算 `Objects.nonNull(systemInfo)`；
+	2. 计算 `SlowPageStatisticsPO::getSystemId`；
+	3. 计算 `systemInfo.getId()`（这里直接空指针了）。
+	然后才执行 `.eq(...)`。 
+	- 最佳实践写法（防 NPE），写 Lambda 条件时，推荐这样写：
 ```java
 Long systemId = systemInfo != null ? systemInfo.getId() : null;
 	
