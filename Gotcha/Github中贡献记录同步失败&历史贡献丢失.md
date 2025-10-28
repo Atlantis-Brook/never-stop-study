@@ -28,4 +28,4 @@
 	# 5. 推送到 GitHub
 	git push --force
 	```
-- **Note**: 
+- **Note**: ⚠️检查邮箱是否和GitHub保持一致
