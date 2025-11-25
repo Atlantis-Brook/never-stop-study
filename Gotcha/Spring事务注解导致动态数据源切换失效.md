@@ -1,4 +1,4 @@
-#Spring #Transactional
+#Spring #Transactional #Dynamic-datasource
 **为什么 @Transactional 会导致多数据源 @DS 失效？为什么两个数据源有相同表结构时更容易踩坑？如何正确解决？**
 
 ---
@@ -183,3 +183,189 @@ public class MyService { ... }
     
 
 发出来，我可以告诉你 **到底是不是因为事务管理器配置错误导致的**（90% 的公司都会配错）。
+
+
+下面我把 **@DSTransactional 的内部原理** 用最清晰、最工程化的方式讲透。
+
+> 结论先说：  
+> **@DSTransactional 的本质是“一个整合了 @DS 与 @Transactional 的组合注解 + 一个自定义 Transaction Advisor（切面）”，它在事务开启之前先执行数据源切换，从而保证事务绑定的是正确的数据源。**
+
+这是为什么 @Transactional + @DS 会失效，而 @DSTransactional 不会。
+
+---
+
+# 🧱 一、为什么 @Transactional + @DS 会失效（理解原理的前提）
+
+Spring 的 AOP 优先级是：
+
+```
+事务切面（@Transactional） > 动态数据源切面（@DS）
+```
+
+也就是说：
+
+### 进入方法时发生的顺序
+
+1. **@Transactional 先执行** → 事务管理器已经绑定主数据源
+    
+2. @DS 想切换数据源，但已经晚了（事务已经开始）
+    
+
+所以事务期间数据源不会变，统一是 `primary` 数据源。
+
+---
+
+# 🚀 二、@DSTransactional 是怎么解决这个顺序问题的？
+
+Dynamic-datasource 额外定义了一个 **特殊的 Spring 切面（Advisor）**
+
+> **它的优先级比事务切面更高**
+
+因此执行顺序变成：
+
+```
+@DSTransactional（动态事务切面） → 切换数据源
+      ↓
+真正进入 Spring 的事务切面 → 开启正确数据源的事务
+```
+
+---
+
+# 📦 三、@DSTransactional 的源码机制（核心原理）
+
+下面是 dynamic-datasource 核心的执行逻辑（简化解释）：
+
+---
+
+## 1) @DSTransactional 不是简单的标记，而是一个复合注解
+
+源码位置（版本 3.x）：
+
+```java
+@Target({ElementType.METHOD, ElementType.TYPE})
+@Retention(RetentionPolicy.RUNTIME)
+@Inherited
+@Documented
+@Transactional
+@DS
+public @interface DSTransactional {
+    String value() default "";
+}
+```
+
+关键点：
+
+- 它 **同时包含了 @Transactional 和 @DS**
+    
+- 但它不是简单叠加，而是 **会被专门的切面增强处理**
+    
+
+---
+
+## 2) Dynamic-datasource 给 @DSTransactional 定义了一个独立的事务 Advisor
+
+源码（简化）：
+
+```java
+public class DynamicLocalTransactionAdvisor extends AbstractPointcutAdvisor {
+
+    public DynamicLocalTransactionAdvisor(...) {
+        this.advice = new DynamicLocalTransactionInterceptor(...);
+    }
+}
+```
+
+这个 Advisor：
+
+### 优先级高于 Spring 事务切面（@Transactional）
+
+通过：
+
+```java
+@Order(Ordered.LOWEST_PRECEDENCE - 1)
+```
+
+Dynamic-datasource 的切面实际上排到了事务切面前面。
+
+---
+
+## 3) 这个 Advisor 会做两件事：
+
+---
+
+### **① 先根据 @DSTransactional 的值切换数据源**
+
+```java
+DynamicDataSourceContextHolder.push(dsName);
+```
+
+这一步完成数据源切换。
+
+放在事务开启前执行 → 关键所在。
+
+---
+
+### **② 再调用 Spring 的事务逻辑（即 @Transactional）**
+
+内部最终仍然调用：
+
+```java
+TransactionInterceptor.invoke()
+```
+
+但是因为数据源已经切换了，所以事务绑定正确的数据源。
+
+---
+
+# 🔥 四、用一句话总结核心原理
+
+> **@DSTransactional 通过一个优先级比事务切面更高的 AOP 切面，在事务开启之前强制切换数据源，从而确保事务真正使用 @DS 指定的数据源。**
+
+这就是它能解决事务中 @DS 失效的根本原因。
+
+---
+
+# 🎯 五、为什么两个数据源表结构相同的时候更容易“看不出问题”
+
+因为：
+
+- 当 @Transactional + @DS 失效时，实际查询的是主库
+    
+- 两个库表结构一样
+    
+- 查询仍然能正常返回
+    
+
+所以你会误以为：
+
+> 数据源切换成功了。
+
+实际上并没有。
+
+---
+
+# 📘 六、什么时候必须使用 @DSTransactional？
+
+|场景|是否需要|
+|---|---|
+|方法内需要数据源切换并开启事务|✔ 必须|
+|方法内只有一个数据源，但是非主数据源|✔ 建议|
+|不需要事务|✘ 不用|
+|使用 @DS 在 Service 类上 + 方法上使用 @Transactional|✔ 可行（因为切面顺序正确）|
+
+---
+
+# 📌 七、你可能在问的附加问题
+
+如果你需要，我也可以进一步讲：
+
+- @DS 的切面执行顺序（DSDynamicDataSourceAspect 原理）
+    
+- 为什么 @DS 放在 Mapper 不如放 Service 层
+    
+- 多数据源事务如何回滚
+    
+- 多数据源混合事务是否支持分布式事务
+    
+
+可以继续问。
