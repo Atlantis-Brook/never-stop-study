@@ -95,20 +95,19 @@ public class UserService {
 }
 ```
 
+---
 ### 3. 常见坑点总结
-
-
-
+1. 嵌套校验失效：如果你在 User 类里的 Address 属性上写了 `@Validated`，校验是不会生效的，必须写 `@Valid`。
+2. 分组校验失效：如果你在 Controller 参数上用了 `@Valid`，那么你在 DTO 里写的 `(groups = ...)` 将被忽略。
+3. 集合校验：如果参数是`List<User>`，直接加 @Valid 可能失效。在 Spring 较高版本中，可以这样写：
+	1. `public String save(@RequestBody @Valid List<User> users)。`
+	2. 如果失效，通常需要在类上加 `@Validated`，并在参数前加 `@Valid`。
 ### 总结建议
 
 - **在 Controller 校验单个简单对象**：`@Valid` 或 `@Validated` 随你挑。
-    
 - **需要分组校验**：必须用 `@Validated`。
-    
 - **需要嵌套校验（校验对象里的对象）**：内部对象属性上必须加 `@Valid`。
-    
 - **在 Service 层或普通 Bean 里校验**：类上加 `@Validated`。
-    
 
 在 Spring Boot 中，当 `@Valid` 或 `@Validated` 校验失败时，系统会抛出异常。如果不手动处理，前端会收到一个 500 错误或者一个格式非常乱的默认错误响应。
 
@@ -125,7 +124,6 @@ public class UserService {
 2. **`ConstraintViolationException`**：当你在 Service 类上使用 `@Validated`，或者在 Controller 路径参数/查询参数上校验失败时抛出。
     
 3. **`BindException`**：当表单提交（非 JSON）校验失败时抛出。
-    
 
 ---
 
@@ -133,9 +131,7 @@ public class UserService {
 
 我们可以创建一个通用的结果类 `Result`，并编写全局处理器：
 
-Java
-
-```
+``` java
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -191,9 +187,7 @@ public class GlobalExceptionHandler {
 
 你可以在 DTO 的注解中自定义 `message`，异常处理器会自动抓取它：
 
-Java
-
-```
+``` java 
 public class UserDTO {
     @NotBlank(message = "用户名不能为空")
     private String username;
@@ -204,13 +198,3 @@ public class UserDTO {
 ```
 
 此时，当前端发送一个 age 为 10 的请求时，全局异常处理器会捕获并返回： `{"code": 400, "msg": "参数校验失败: age: 年龄不能小于18岁", "data": null}`
-
----
-
-### 5. 关于内存 OOM 的特别提醒
-
-在你目前的 3G Pod 环境下，如果频繁发生大量参数校验失败，虽然不会直接导致 OOM，但要注意：
-
-- **异常堆栈追踪（Stacktrace）**：抛出异常是非常消耗 CPU 和内存的操作（需要填充堆栈）。
-    
-- **优化建议**：在高并发场景下，如果参数校验失败率很高，建议在生产环境**关闭异常堆栈打印**，只记录简要的错误信息，以减轻 JVM 的压力。
