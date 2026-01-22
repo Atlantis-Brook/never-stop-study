@@ -1,4 +1,9 @@
 #xxljob #schedule 
-case:  这个任务配的是单机串行策略，第一张图中展示的任务执行时间为啥是同时触发呢
-![image.png](https://atlantis-picgo-core.oss-cn-beijing.aliyuncs.com/picgo/20260122144136-cbaa49-20260122144134956.png)
+**case:**  
+如下定时任务配的是单机串行策略
 ![image.png](https://atlantis-picgo-core.oss-cn-beijing.aliyuncs.com/picgo/20260122144206-da7919-20260122144205695.png)
+图中展示的任务执行时间为同时触发的。
+![image.png](https://atlantis-picgo-core.oss-cn-beijing.aliyuncs.com/picgo/20260122144136-cbaa49-20260122144134956.png)
+
+**根因：**
+xxljob的阻塞处理策略设置为单机串行时，如果旧的任务还没跑完，新的任务就先排队等着。你的这个任务在12:11:40 时，12:01 的任务还没跑完，那么 12:02 的任务强制在队列里等待，并不会开启第二个线程去跑。而12:11 这个时间点，执行器已经恢复正常工作，顺序执行队列中的任务并清空了之前的排队积压。
