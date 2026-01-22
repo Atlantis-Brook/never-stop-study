@@ -14,11 +14,11 @@
 	 - 条件查询：
 	   在 MyBatis-Plus 的源码中，无论是 `QueryWrapper` 还是 `LambdaQueryWrapper`，它们都继承自 `AbstractWrapper`。  
 	   核心方法定义在 `AbstractWrapper` 中：
-```java
-	public Children eq(boolean condition, R column, Object val) {
-    return addCondition(condition, column, EQ, val);
-}
-```
+	```java
+		public Children eq(boolean condition, R column, Object val) {
+	    return addCondition(condition, column, EQ, val);
+	}
+	```
 	- 问题根因：Java 求值顺序，区别主要在 Java 自身的 **求值机制**
 	```java
 	.eq(Objects.nonNull(systemInfo), SlowPageStatisticsPO::getSystemId, systemInfo.getId())
