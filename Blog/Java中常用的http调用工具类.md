@@ -1,3 +1,4 @@
+#HTTP #Util
 以下是Java中常用主流的HTTP调用工具类的列举。我基于当前主流的使用情况（2024-2025年），选择了四个最常见的：HttpURLConnection（JDK内置）、Apache HttpClient、OkHttp和Java HttpClient（JDK 11+）。这些是企业开发、Web服务调用中最受欢迎的选项，其他如Retrofit（基于OkHttp的更高层封装）或RestTemplate（Spring专属）也可考虑，但这里聚焦核心工具类。
 
 对于每个工具类，我将提供详细的使用demo示例（包括GET和POST请求的代码，假设Maven依赖已添加），并分析其适用的场景。代码示例已验证可运行（基于标准环境），并包含必要的import和异常处理。
