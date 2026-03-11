@@ -10,6 +10,7 @@
 ```java 
 @Configuration("decryptWhitelistConfig")
 @Data
+@RefreshScope
 @ConfigurationProperties(prefix = "decrypt-whitelist")
 public class DecryptWhitelistConfig {
 
