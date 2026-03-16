@@ -1,3 +1,8 @@
+2026简历指导
+https://www.mashibing.com/open-live/360?saleTeacherId=user_00002007&sectionId=3106
+
+企业大模型应用分析
+https://www.mashibing.com/open-live/360?sectionId=3051
 
 数据加解密项目
 项目概述
