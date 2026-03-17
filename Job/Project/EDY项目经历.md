@@ -5,7 +5,22 @@ https://www.mashibing.com/open-live/360?saleTeacherId=user_00002007&sectionId=31
 https://www.mashibing.com/open-live/360?sectionId=3051
 
 **数据加解密项目**
+百万QPS
 
+Hologres
+Doris
+**Apache Doris 相对于 Hologres 的劣势分析**
+1. **高并发下更新与点查询劣势**
+    - Hologres 深度结合存储引擎，更擅长处理**超高并发(数万QPS)的行级点更新(Upsert/Delete)**和主键查询(Serving)。
+    - Doris 在极致的超高并发点查场景下，由于其主键模型结构和内存管理方式，可能导致节点在高负载下出现瓶颈，虽然2.0版本已大幅改进。
+2. **存算分离的云原生能力（弹性与成本）**
+    - Hologres 是真正的云原生存算分离架构，支持计算资源秒级弹性缩扩容，且实现了读写隔离，可以极低成本启动。
+    - Doris 虽然也支持存算分离，但其生态更倾向于在通用服务器上进行自维护，在极致的云原生秒级计算负载弹性上略逊一筹。
+3. **阿里云生态整合与PG兼容性**
+    - Hologres 深度无缝集成 MaxCompute、Flink、DataWorks，且**完全兼容 PostgreSQL 协议**，开发者上手成本极低。
+    - Doris 基于MySQL协议，虽然兼容，但对于原本PG生态沉淀较深的团队，Hologres的迁移难度和功能兼容性更佳。
+4. **资源隔离能力**
+    - Hologres 提供更细粒度的计算资源隔离和多实例管理，在企业级复杂场景中，不同负载(读/写)的故障隔离能力更强。
 
 项目概述
 QPS
