@@ -1,3 +1,4 @@
+#tools
 # 1. 开通阿里云OSS服务
 # 2. PicGo-Core安装及配置
 PicGo依赖于Node环境，需要先安装Node环境
