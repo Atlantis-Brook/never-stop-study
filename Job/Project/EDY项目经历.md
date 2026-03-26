@@ -10,8 +10,7 @@ https://www.mashibing.com/open-live/360?sectionId=3051
 
 excel导出脱敏
 
-
-
+解密行为记录（考虑结合大数据技术栈 日志流）
 Hologres
 Doris
 **Apache Doris 相对于 Hologres 的劣势分析**
@@ -39,6 +38,15 @@ QPS
 诉求：
 方案：
 
-
+明文密文的存储
 Redis(数据一致性、热点Key等，结合雪崩、击穿【布隆过滤器】、穿透) 达到的效果，全司接口耗时增加20-30ms
 MQ(幂等)
+
+
+
+**统一登陆权限管理项目
+
+Oauth2
+Ldap
+
+RBAC角色模型权限管理
