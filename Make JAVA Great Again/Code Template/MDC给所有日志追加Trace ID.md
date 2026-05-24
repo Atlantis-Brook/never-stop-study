@@ -52,8 +52,6 @@ public class LogInterceptor implements HandlerInterceptor {
 
 将刚刚写好的拦截器注册到 Spring MVC 的配置流中（正好可以放在你之前的 `WebMvcConfigurer` 里面）。
 ```java
-package com.example.config;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
